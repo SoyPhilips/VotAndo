@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VotaCiudadano | Sistema de Participación Democrática</title>
+    <meta name="description" content="Participa en las decisiones de tu ciudad con VotaCiudadano. Votación segura, transparente y fácil.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Styles -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo" id="nav-home">VotaCiudadano</div>
+        <div class="nav-links">
+            <span class="nav-link" id="nav-proposals">Propuestas</span>
+            <span class="nav-link hidden" id="nav-admin">Panel Admin</span>
+            <div id="auth-links">
+                <button class="btn btn-outline" id="btn-login-view">Iniciar Sesión</button>
+                <button class="btn btn-primary" id="btn-register-view">Registrarse</button>
+            </div>
+            <div id="user-menu" class="hidden">
+                <span id="user-email" class="nav-link"></span>
+                <button class="btn btn-outline" id="btn-logout">Salir</button>
+            </div>
+            <button class="btn btn-outline" id="theme-toggle" title="Cambiar Modo">🌓</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Hero Section / Welcome -->
+        <section id="hero-view" class="view">
+            <div style="text-align: center; margin: 4rem 0;">
+                <h1 style="font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -2px;">Tu voz construye la <span style="color: var(--primary);">ciudad.</span></h1>
+                <p style="color: var(--text-muted); font-size: 1.25rem; max-width: 600px; margin: 0 auto 2rem;">Participa de manera segura e informada en las propuestas que transforman tu comunidad.</p>
+                <button class="btn btn-primary btn-lg" style="padding: 1rem 2rem; font-size: 1.1rem;" onclick="app.showView('proposals-view')">Ver Propuestas Activas</button>
+            </div>
+        </section>
+
+        <!-- Proposals List -->
+        <section id="proposals-view" class="view hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2>Propuestas Ciudadanas</h2>
+                <div id="filter-container">
+                    <!-- Filters can go here -->
+                </div>
+            </div>
+            <div class="grid" id="proposals-grid">
+                <!-- Proposals will be injected here -->
+            </div>
+        </section>
+
+        <!-- Auth: Login -->
+        <section id="login-view" class="view hidden">
+            <div class="auth-container card">
+                <h2 style="margin-bottom: 1.5rem; text-align: center;">Bienvenido de nuevo</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label class="form-label">Correo Electrónico</label>
+                        <input type="email" id="login-email" class="form-input" placeholder="ejemplo@correo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contraseña</label>
+                        <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Ingresar</button>
+                </form>
+                <p style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem; color: var(--text-muted);">
+                    ¿No tienes cuenta? <span class="nav-link" style="color: var(--primary);" id="link-to-register">Regístrate aquí</span>
+                </p>
+                <p style="margin-top: 0.5rem; text-align: center; font-size: 0.8rem;">
+                    <span class="nav-link" id="link-recovery">Olvidé mi contraseña</span>
+                </p>
+            </div>
+        </section>
+
+        <!-- Auth: Register -->
+        <section id="register-view" class="view hidden">
+            <div class="auth-container card">
+                <h2 style="margin-bottom: 1.5rem; text-align: center;">Crear Cuenta</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label class="form-label">Correo Electrónico</label>
+                        <input type="email" id="register-email" class="form-input" placeholder="ejemplo@correo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Contraseña</label>
+                        <input type="password" id="register-password" class="form-input" placeholder="••••••••" required>
+                        <small style="color: var(--text-muted); font-size: 0.75rem;">Mín. 8 caracteres (A, a, 1)</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Registrarse</button>
+                </form>
+                <p style="margin-top: 1.5rem; text-align: center; font-size: 0.9rem; color: var(--text-muted);">
+                    ¿Ya tienes cuenta? <span class="nav-link" style="color: var(--primary);" id="link-to-login">Inicia sesión</span>
+                </p>
+            </div>
+        </section>
+
+        <!-- Admin Panel -->
+        <section id="admin-view" class="view hidden">
+            <div class="card" style="margin-bottom: 2rem;">
+                <h2>Crear Nueva Propuesta</h2>
+                <form id="create-proposal-form" style="margin-top: 1.5rem;">
+                    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Título</label>
+                            <input type="text" id="prop-title" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Categoría</label>
+                            <select id="prop-category" class="form-input">
+                                <option value="Seguridad">Seguridad</option>
+                                <option value="Movilidad">Movilidad</option>
+                                <option value="Salud">Salud</option>
+                                <option value="Cultura">Cultura</option>
+                                <option value="Educación">Educación</option>
+                                <option value="Servicios Públicos">Servicios Públicos</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Descripción</label>
+                        <textarea id="prop-desc" class="form-input" style="height: 100px;" required></textarea>
+                    </div>
+                    <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Fecha de Inicio</label>
+                            <input type="datetime-local" id="prop-start" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Fecha de Cierre</label>
+                            <input type="datetime-local" id="prop-end" class="form-input" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Publicar Propuesta</button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h2>Resumen de Votaciones (Auditoría)</h2>
+                <div id="admin-audit-log" style="margin-top: 1.5rem;">
+                    <!-- Audit logs or stats -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile / Settings -->
+        <section id="profile-view" class="view hidden">
+            <div class="auth-container card" style="max-width: 600px;">
+                <h2>Mi Cuenta</h2>
+                <p id="profile-email" style="margin: 1rem 0; font-weight: 600;"></p>
+                
+                <div id="request-creation-section" style="margin-top: 2rem; padding: 1.5rem; border: 1px solid var(--border); border-radius: 16px; background: rgba(var(--primary), 0.05);">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Solicitar permiso para crear propuestas</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Si eres un representante vecinal o líder comunitario, puedes solicitar permisos para publicar nuevas propuestas en el sistema.</p>
+                    
+                    <form id="request-creator-form">
+                        <div class="form-group">
+                            <label class="form-label">¿Por qué deseas crear propuestas?</label>
+                            <textarea id="request-reason" class="form-input" style="height: 80px;" placeholder="Describe tu rol o interés..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+                    </form>
+
+                    <div id="request-status-container" class="hidden" style="margin-top: 1.5rem;">
+                        <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem;">Estado de tu última solicitud:</h4>
+                        <div id="request-status-badge" class="status-badge"></div>
+                    </div>
+                </div>
+
+                <hr style="margin: 2rem 0; border: 0; border-top: 1px solid var(--border);">
+                <button class="btn btn-outline" style="color: var(--danger); border-color: var(--danger); width: 100%;" id="btn-delete-account">Eliminar mi cuenta permanentemente</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div id="toast" style="position: fixed; bottom: 2rem; right: 2rem; padding: 1rem 2rem; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); box-shadow: var(--shadow); z-index: 1000; transform: translateY(200%); transition: transform 0.3s ease;" class="hidden">
+        <span id="toast-msg"></span>
+    </div>
+
+    <!-- Modal para Votación Anónima / Confirmación -->
+    <div id="modal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 2000; display: flex; align-items: center; justify-content: center;">
+        <div class="card" style="max-width: 400px; width: 90%;">
+            <h3 id="modal-title">Confirmar Voto</h3>
+            <p id="modal-body" style="margin: 1rem 0; color: var(--text-muted);"></p>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem;">
+                <button class="btn btn-outline" onclick="app.closeModal()">Cancelar</button>
+                <button class="btn btn-primary" id="modal-confirm">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

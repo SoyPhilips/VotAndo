@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+data/vota_ciudadano.db
+data/backups/
+.env
+.vscode/
+.idea/
